@@ -14,8 +14,6 @@ class HomeController extends Controller
 
         $posts = Post::query()
             ->with('user')
-            ->isNotDraft()
-            ->published()
             ->paginate(10);
 
         return view('home', compact('posts'));

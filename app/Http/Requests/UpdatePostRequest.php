@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class UpdatePostRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class UpdatePostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Auth::id() === $this->post->user_id;
     }
 
     /**
@@ -21,8 +23,23 @@ class UpdatePostRequest extends FormRequest
      */
     public function rules(): array
     {
+        $requiredWithoutIsDraft = Rule::requiredIf(request('is_draft') == null);
+
         return [
-            //
+            'title' => [
+                $requiredWithoutIsDraft,
+                'max:60',
+            ],
+            'content' => [
+                $requiredWithoutIsDraft,
+                'nullable',
+            ],
+            'is_draft' => [
+                'nullable',
+            ],
+            'publish_date' => $requiredWithoutIsDraft->condition
+                ? [$requiredWithoutIsDraft, 'date', 'after_or_equal:today']
+                : [$requiredWithoutIsDraft]
         ];
     }
 }

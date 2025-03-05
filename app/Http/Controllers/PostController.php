@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class PostController extends Controller implements HasMiddleware
 {
@@ -18,6 +19,7 @@ class PostController extends Controller implements HasMiddleware
             new Middleware('auth', only: ['create', 'store', 'edit', 'update'])
         ];
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -59,6 +61,7 @@ class PostController extends Controller implements HasMiddleware
                 ? Carbon::parse($validatedData['publish_date'])->format('Y-m-d')
                 : null;
             $validatedData['user_id'] = Auth::id();
+            $validatedData['content'] = Str::trim($validatedData['content']);
 
             Post::create($validatedData);
 
@@ -85,7 +88,7 @@ class PostController extends Controller implements HasMiddleware
     public function edit(Post $post)
     {
         //
-        return view('posts.edit');
+        return view('posts.edit', compact('post'));
     }
 
     /**
@@ -94,6 +97,10 @@ class PostController extends Controller implements HasMiddleware
     public function update(UpdatePostRequest $request, Post $post)
     {
         //
+        $validatedData = $request->validated();
+        $post->fill($validatedData)->save();
+
+        return redirect()->back()->with('success', 'Post updated successfully');
     }
 
     /**
@@ -102,5 +109,8 @@ class PostController extends Controller implements HasMiddleware
     public function destroy(Post $post)
     {
         //
+        $post->delete();
+
+        return redirect()->back()->with('success', 'Post deleted successfully');
     }
 }
