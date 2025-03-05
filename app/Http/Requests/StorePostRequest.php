@@ -37,9 +37,10 @@ class StorePostRequest extends FormRequest
             'is_draft' => [
                 'nullable',
             ],
-            'publish_date' => $requiredWithoutIsDraft->condition
-                ? [$requiredWithoutIsDraft, 'date', 'after_or_equal:today']
-                : [$requiredWithoutIsDraft]
+            'publish_date' => [
+                $requiredWithoutIsDraft,
+                $requiredWithoutIsDraft->condition == true ? 'date' : ''
+            ],
         ];
     }
 }

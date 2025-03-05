@@ -14,6 +14,8 @@ class HomeController extends Controller
 
         $posts = Post::query()
             ->with('user')
+            ->whereHas('user', fn ($query) => $query->where('id', Auth::id()))
+            ->latest()
             ->paginate(10);
 
         return view('home', compact('posts'));
