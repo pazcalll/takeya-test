@@ -24,7 +24,13 @@ class PostController extends Controller implements HasMiddleware
     public function index()
     {
         //
-        return view('posts.index');
+        $posts = Post::query()
+            ->with('user')
+            ->isNotDraft()
+            ->published()
+            ->paginate(10);
+
+        return view('posts.index', compact('posts'));
     }
 
     /**
