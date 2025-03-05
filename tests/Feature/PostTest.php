@@ -33,6 +33,8 @@ class PostTest extends TestCase
         $post = Post::factory()->create([
             'user_id' => $user->id,
             'is_draft' => false,
+            'title' => 'Test Post',
+            'content' => 'Test Content',
         ]);
 
         $response = $this
