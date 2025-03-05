@@ -28,7 +28,7 @@ class StorePostRequest extends FormRequest
         return [
             'title' => [
                 $requiredWithoutIsDraft,
-                'max:255',
+                'max:60',
             ],
             'content' => [
                 $requiredWithoutIsDraft,

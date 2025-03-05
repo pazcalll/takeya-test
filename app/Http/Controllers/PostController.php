@@ -26,6 +26,7 @@ class PostController extends Controller implements HasMiddleware
         //
         $posts = Post::query()
             ->with('user')
+            ->whereHas('user', fn ($query) => $query->where('id', Auth::id()))
             ->isNotDraft()
             ->published()
             ->paginate(10);

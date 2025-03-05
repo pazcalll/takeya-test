@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained();
-            $table->string('title')->nullable();
+            $table->string('title', 60)->nullable();
             $table->text('content')->nullable();
             $table->boolean('is_draft');
             $table->date('publish_date')->nullable();
