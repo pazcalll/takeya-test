@@ -2,13 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
     //
     public function index()
     {
-        return view('home');
+        if (!Auth::check()) return view('home');
+
+        $posts = Post::query()
+            ->with('user')
+            ->isNotDraft()
+            ->published()
+            ->paginate(10);
+
+        return view('home', compact('posts'));
     }
 }
