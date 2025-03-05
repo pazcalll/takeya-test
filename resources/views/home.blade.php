@@ -22,6 +22,7 @@
                 {{-- for authenticated users --}}
                 <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                     <div class="space-y-6 p-6">
+                        <x-alert />
                         <h2 class="text-lg font-semibold">Your Posts</h2>
                         <div class="rounded-md border p-5 shadow">
                             <div class="flex items-center gap-2">

@@ -24,8 +24,8 @@
                             </div>
 
                             <div>
-                                <x-input-label for="published_at" :value="__('Publish Date')" />
-                                <x-text-input id="published_at" name="published_at" type="date" class="mt-1 block w-full" />
+                                <x-input-label for="publish_date" :value="__('Publish Date')" />
+                                <x-text-input id="publish_date" name="publish_date" type="date" class="mt-1 block w-full" />
                                 <x-input-error :messages="''" class="mt-2" />
                             </div>
 
