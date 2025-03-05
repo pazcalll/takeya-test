@@ -25,6 +25,10 @@
                         <x-alert />
                         <h2 class="text-lg font-semibold">Your Posts</h2>
 
+                        @if ($posts->isEmpty())
+                            <div class="text-gray-500">You have not created any posts yet.</div>
+                        @endif
+
                         @foreach ($posts as $post)
                             <div class="rounded-md border p-5 shadow">
                                 <div class="flex items-center gap-2">

@@ -8,6 +8,12 @@
     <div class="py-12">
         <div class="mx-auto max-w-7xl space-y-8 sm:px-6 lg:px-8">
 
+            @if ($posts->isEmpty())
+                <div class="overflow-hidden bg-white rounded-md border p-5 shadow">
+                    <div class="text-gray-500">No posts found.</div>
+                </div>
+            @endif
+
             @foreach ($posts as $post)
                 <div class="overflow-hidden bg-white rounded-md border p-5 shadow">
                     <h3><a href="{{ route('posts.show', $post->id) }}" class="text-blue-500">{{ $post->title }}</a></h3>
