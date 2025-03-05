@@ -40,12 +40,7 @@ class PostTest extends TestCase
             ->get('/posts');
 
         $response->assertStatus(200);
-        $response->assertSee(route('posts.show', $post->id));
-
-        $response = $this
-            ->get('/posts');
-
-        $response->assertStatus(200);
+        $response->assertSee($post->title);
         $response->assertSee(route('posts.show', $post->id));
     }
 
