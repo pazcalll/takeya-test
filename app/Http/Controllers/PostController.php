@@ -77,6 +77,8 @@ class PostController extends Controller implements HasMiddleware
     public function show(Post $post)
     {
         //
+        if ($post->is_draft) abort(404);
+
         $post->load('user');
 
         return view('posts.show', compact('post'));
