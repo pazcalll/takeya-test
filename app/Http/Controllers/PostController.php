@@ -11,15 +11,8 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
-class PostController extends Controller implements HasMiddleware
+class PostController extends Controller
 {
-    public static function middleware()
-    {
-        return [
-            new Middleware('auth', only: ['create', 'store', 'edit', 'update'])
-        ];
-    }
-
     /**
      * Display a listing of the resource.
      */
