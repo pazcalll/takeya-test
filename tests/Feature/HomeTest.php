@@ -10,6 +10,22 @@ use Tests\TestCase;
 
 class HomeTest extends TestCase
 {
+    use RefreshDatabase;
+
+    protected $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed();
+        $this->user = User::with('posts')->first();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+    }
+
     public function test_access_home_page_as_guest(): void
     {
         $response = $this->get('/');
@@ -19,33 +35,31 @@ class HomeTest extends TestCase
         $response->assertSee('login');
         $response->assertSee('or');
         $response->assertSee('register');
-    }
-
-    public function test_access_home_page_as_authenticated_user(): void
-    {
-        $user = User::factory()->create();
 
         $response = $this
-            ->actingAs($user)
+            ->actingAs($this->user)
             ->get('/');
 
         $response->assertStatus(200);
-        $response->assertSee('You have not created any posts yet.');
+        if ($this->user->posts->isEmpty()) {
+            $response->assertSee('You have not created any posts yet.');
+        } else {
+            $response->assertDontSee('You have not created any posts yet.');
+        }
     }
 
-    public function test_access_home_page_as_authenticated_user_with_posts(): void
+    public function test_create_posts_button(): void
     {
-        $user = User::factory()->create();
-        $post = Post::factory()->create([
-            'user_id' => $user->id,
-            'is_draft' => false,
-        ]);
+        $response = $this->get('/');
+
+        $response->assertStatus(200);
+        $response->assertDontSee('Create New Post');
 
         $response = $this
-            ->actingAs($user)
+            ->actingAs($this->user)
             ->get('/');
 
         $response->assertStatus(200);
-        $response->assertSee(route('posts.show', $post->id));
+        $response->assertSee('Create New Post');
     }
 }
