@@ -41,7 +41,7 @@ class StorePostRequest extends FormRequest
             ],
             'publish_date' => [
                 $requiredWithoutIsDraft,
-                'date',
+                $requiredWithoutIsDraft->condition ? 'date' : '',
             ],
         ];
     }

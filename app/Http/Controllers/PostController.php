@@ -84,7 +84,7 @@ class PostController extends Controller
         $validatedData = $request->validated();
         $post->fill($validatedData)->save();
 
-        return redirect()->back()->with('success', 'Post updated successfully');
+        return to_route('home')->with('success', 'Post updated successfully');
     }
 
     /**

@@ -39,7 +39,7 @@ class UpdatePostRequest extends FormRequest
             ],
             'publish_date' => [
                 $requiredWithoutIsDraft,
-                'date',
+                $requiredWithoutIsDraft->condition ? 'date' : '',
             ],
         ];
     }
