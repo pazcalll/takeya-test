@@ -5,11 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
-use Carbon\Carbon;
-use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -47,15 +43,7 @@ class PostController extends Controller
         $validatedData = $request->validated();
 
         try {
-            $validatedData['is_draft'] = @$validatedData['is_draft'] == 'on'
-                ? true
-                : false;
-            $validatedData['publish_date'] = @$validatedData['publish_date']
-                ? Carbon::parse($validatedData['publish_date'])->format('Y-m-d')
-                : null;
             $validatedData['user_id'] = Auth::id();
-            $validatedData['content'] = Str::trim($validatedData['content']);
-
             Post::create($validatedData);
 
             return to_route('home')->with('success', 'Post created successfully');
@@ -83,6 +71,7 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         //
+        if ($post->user_id !== Auth::id()) abort(403);
         return view('posts.edit', compact('post'));
     }
 
@@ -104,6 +93,7 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         //
+        if ($post->user_id !== Auth::id()) abort(403);
         $post->delete();
 
         return redirect()->back()->with('success', 'Post deleted successfully');

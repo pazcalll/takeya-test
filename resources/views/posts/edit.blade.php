@@ -34,7 +34,13 @@
 
                             <div>
                                 <label for="is_draft" class="inline-flex items-center">
-                                    <input id="is_draft" type="checkbox" value="1" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="is_draft">
+                                    <input id="is_draft" type="checkbox" value="1" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="is_draft"
+                                        {{
+                                            (old('is_draft') == 'on' ? 'checked' : null)
+                                                ? 'checked'
+                                                : ($post->is_draft ? 'checked' : null)
+                                        }}
+                                        >
                                     <span class="ms-2 text-sm text-gray-600">{{ __('Save as Draft') }}</span>
                                 </label>
                             </div>
